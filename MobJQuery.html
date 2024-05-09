@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Student Admission</title>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <style>
+    /* Custom styles */
+    body {
+      background: linear-gradient(109.6deg, rgb(43, 1, 91) 13.4%, rgb(122, 2, 54) 100.2%);
+      font-family: "Poppins", sans-serif;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      margin: auto; /* Center the form */
+      margin-top: 50px; /* Add some space from the top */
+    }
+
+    .container .title {
+      font-size: 25px;
+      font-weight: 500;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .container .title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 30px;
+      background: radial-gradient(
+        780px at 37.8% 100.3%,
+        rgb(19, 55, 115) 2.2%,
+        rgb(32, 7, 80) 20.2%,
+        rgb(27, 88, 111) 58.6%,
+        rgb(115, 88, 44) 75%,
+        rgb(99, 19, 90) 89.6%,
+        rgb(12, 51, 76) 96.1%
+      );
+    }
+
+    .container form .user-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    form .user-details .input-box {
+      margin-bottom: 15px;
+      width: calc(50% - 10px); /* Adjusted width */
+    }
+
+    .user-details .user-details {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .user-details .input-box input {
+      height: 45px;
+      width: 100%;
+      outline: none;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding-left: 15px;
+      font-size: 12px;
+      border-bottom-width: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .user-details .input-box input:focus,
+    .user-details .input-box input:valid {
+      border-color: #9b59b6;
+    }
+
+    .button {
+      text-align: center;
+    }
+
+    .button input {
+      height: 45px;
+      width: 150px;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      background: linear-gradient(109.6deg, rgb(43, 1, 91) 13.4%, rgb(122, 2, 54) 100.2%);
+      cursor: pointer;
+    }
+
+    .button input:hover {
+      background: radial-gradient(
+        780px at 37.8% 100.3%,
+        rgb(19, 55, 115) 2.2%,
+        rgb(32, 7, 80) 20.2%,
+        rgb(27, 88, 111) 58.6%,
+        rgb(115, 88, 44) 75%,
+        rgb(99, 19, 90) 89.6%,
+        rgb(12, 51, 76) 96.1%
+      );
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admission Page -->
+  <div data-role="page" id="admission">
+    <div data-role="header" data-theme="b">
+      <h1>Student Admission</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="container">
+        <div class="title">Student Admission Form</div>
+        <form id="admissionForm">
+          <div class="user-details">
+            <div class="input-box">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-box">
+              <label for="dob">Date of Birth:</label>
+              <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="input-box">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-box">
+              <label for="phone">Phone:</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="input-box">
+              <label for="course">Course:</label>
+              <select id="course" name="course" data-native-menu="false" required>
+                <option value="">Select a course</option>
+                <option value="Bachelor of Commerce">Bachelor of Commerce</option>
+                <option value="Bachelor of Arts">Bachelor of Arts</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Bachelor of Business Administration">Bachelor of Business Administration</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Bachelor of Science">Bachelor of Science</option>
+                <option value="Computer Application">Computer Application</option>
+                <option value="Economics">Economics</option>
+                <option value="Law">Law</option>
+              </select>
+            </div>
+            <div class="input-box">
+              <label for="semester">Semester:</label>
+              <select id="semester" name="semester" data-native-menu="false" required>
+                <option value="">Select a semester</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div class="input-box">
+              <label for="prevMarks10th">Prev. Marks (10th Grade):</label>
+              <input type="number" id="prevMarks10th" name="prevMarks10th" required>
+            </div>
+            <div class="input-box">
+              <label for="prevMarks12th">Prev. Marks (12th/Diploma):</label>
+              <input type="number" id="prevMarks12th" name="prevMarks12th" required>
+            </div>
+            <div class="input-box">
+              <label for="residentialAddress">Residential Address:</label>
+              <textarea id="residentialAddress" name="residentialAddress" required></textarea>
+            </div>
+            <div class="input-box">
+              <label for="permanentAddress">Permanent Address:</label>
+              <textarea id="permanentAddress" name="permanentAddress" required></textarea>
+            </div>
+            <div class="input-box">
+              <label for="adharCardNo">Aadhar Card No:</label>
+              <input type="text" id="adharCardNo" name="adharCardNo" required>
+            </div>
+            <div class="input-box">
+              <label for="panNo">PAN No (Optional):</label>
+              <input type="text" id="panNo" name="panNo">
+            </div>
+              
+          </div>
+          <div class="button">
+            <input type="submit" value="Submit">
+          </div>
+        </form>
+        <div id="formErrorMessage"></div> <!-- Added for displaying form error -->
+      </div>
+    </div>
+
+    <div data-role="footer" data-theme="b">
+      <h4>&copy; 2024 Student Admission</h4>
+    </div>
+  </div>
+
+  <!-- Confirmation Page -->
+  <div data-role="page" id="confirmation">
+    <div data-role="header" data-theme="b">
+      <h1>Admission Confirmation</h1>
+    </div>
+
+    <div data-role="content">
+      <h2>Thank you for your submission!</h2>
+      <p>Your admission details have been recorded.</p>
+    </div>
+
+    <div data-role="footer" data-theme="b">
+      <h4>&copy; 2024 Student Admission</h4>
+    </div>
+  </div>
+
+  <script>
+    $(document).on("pagecreate", "#admission", function() {
+      $("#admissionForm").submit(function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+          url: "submit_admission.php", // Replace with your server-side script
+          type: "POST",
+          data: formData,
+          success: function(response) {
+            $.mobile.changePage("#confirmation", { transition: "slide" });
+          },
+          error: function(xhr, status, error) {
+            $("#formErrorMessage").text("Error submitting form. Please try again.");
+            console.log(xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

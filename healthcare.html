@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Healthcare Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            padding-top: 20px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px; /* Increased height for better visibility */
+        }
+
+        .table-search {
+            margin-bottom: 10px;
+        }
+
+        /* Modal styles */
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Healthcare Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Patients</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Doctors</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Patient Demographics</h5>
+                        <div class="chart-container">
+                            <canvas id="patientChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Appointments Overview</h5>
+                        <div class="chart-container">
+                            <canvas id="appointmentChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tables Section -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Patients List</h5>
+                        <div class="table-search">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="patientsTable">
+                                <!-- Table content will be added dynamically -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Doctors List</h5>
+                        <div class="table-search">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="doctorsTable">
+                                <!-- Table content will be added dynamically -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div class="modal fade" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="patientModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="patientModalLabel">Patient Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="patientModalBody">
+                    <!-- Modal content will be added dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript for Charts, Tables, and Modal -->
+    <script>
+        // Dummy data for charts
+        const patientData = {
+            labels: ['Male', 'Female', 'Others'],
+            datasets: [{
+                label: 'Gender Distribution',
+                data: [30, 50, 20],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const appointmentData = {
+            labels: ['Pending', 'Confirmed', 'Completed', 'Cancelled'],
+            datasets: [{
+                label: 'Appointment Status',
+                data: [10, 30, 40, 20],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Chart initialization
+        const patientChartCanvas = document.getElementById('patientChart').getContext('2d');
+        const appointmentChartCanvas = document.getElementById('appointmentChart').getContext('2d');
+
+        const patientChart = new Chart(patientChartCanvas, {
+            type: 'doughnut',
+            data: patientData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showPatientDetails(index); // Function to show modal with patient details
+                    }
+                },
+            },
+        });
+
+        const appointmentChart = new Chart(appointmentChartCanvas, {
+            type: 'bar',
+            data: appointmentData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    }],
+                },
+                legend: {
+                    display: false,
+                },
+            },
+        });
+
+        // Dummy patient and doctor data (for demonstration purposes)
+        const patientsData = [{
+                id: 1,
+                name: 'Aarav Sharma',
+                age: 35,
+                gender: 'Male',
+                email: 'aarav.sharma@example.com',
+                phone: '+919876543210',
+            },
+            {
+                id: 2,
+                name: 'Aaradhya Patel',
+                age: 28,
+                gender: 'Female',
+                email: 'aaradhya.patel@example.com',
+                phone: '+918765432109',
+            },
+            // More patient data here
+        ];
+
+        const doctorsData = [{
+                id: 1,
+                name: 'Dr. Vikram Singh',
+                specialty: 'Cardiology',
+                email: 'vikram.singh@example.com',
+                phone: '+911234567890',
+            },
+            {
+                id: 2,
+                name: 'Dr. Nandini Gupta',
+                specialty: 'Neurology',
+                email: 'nandini.gupta@example.com',
+                phone: '+919988776655',
+            },
+            // More doctor data here
+        ];
+
+        // Function to populate patients table
+        function populatePatientsTable(data) {
+            const tableBody = document.getElementById('patientsTable');
+            tableBody.innerHTML = '';
+
+            data.forEach(patient => {
+                const row = `
+                    <tr>
+                        <td>${patient.id}</td>
+                        <td>${patient.name}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.gender}</td>
+                        <td>${patient.email}</td>
+                        <td>${patient.phone}</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // Function to populate doctors table
+        function populateDoctorsTable(data) {
+            const tableBody = document.getElementById('doctorsTable');
+            tableBody.innerHTML = '';
+
+            data.forEach(doctor => {
+                const row = `
+                    <tr>
+                        <td>${doctor.id}</td>
+                        <td>${doctor.name}</td>
+                        <td>${doctor.specialty}</td>
+                        <td>${doctor.email}</td>
+                        <td>${doctor.phone}</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // Initialize tables with dummy data
+        populatePatientsTable(patientsData);
+        populateDoctorsTable(doctorsData);
+
+        // Function to show patient details modal
+        function showPatientDetails(index) {
+            const patient = patientsData[index];
+            const modalBody = document.getElementById('patientModalBody');
+            modalBody.innerHTML = `
+                <p><strong>Name:</strong> ${patient.name}</p>
+                <p><strong>Age:</strong> ${patient.age}</p>
+                <p><strong>Gender:</strong> ${patient.gender}</p>
+                <p><strong>Email:</strong> ${patient.email}</p>
+                <p><strong>Phone:</strong> ${patient.phone}</p>
+            `;
+            $('#patientModal').modal('show');
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

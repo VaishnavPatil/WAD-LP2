@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom CSS -->
+  <style>
+    /* Custom styles */
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #5a68a5;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: bold;
+    }
+
+    .nav-item {
+      margin-right: 15px;
+    }
+
+    .nav-link {
+      color: #fff !important;
+    }
+
+    .container-fluid {
+      margin-top: 20px;
+    }
+
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      font-weight: bold;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    .small-chart {
+      max-width: 150px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Exam Admin Dashboard</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Exams</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Analytics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Settings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h5 class="card-title">Exam Summary</h5>
+            <p class="card-text">Total Exams: 100</p>
+            <p class="card-text">Completed Exams: 80</p>
+            <p class="card-text">Pending Exams: 20</p>
+            <canvas id="examChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Different Types of Exams -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Exam Types</h5>
+            <ul>
+              <li>Mathematics</li>
+              <li>Science</li>
+              <li>English</li>
+              <li>History</li>
+              <!-- Add more exam types as needed -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Upcoming Exams -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Upcoming Exams</h5>
+            <ul>
+              <li>
+                <span class="font-weight-bold">Mathematics Exam</span><br>
+                <span class="text-muted">Date: 12/05/2024</span><br>
+                <span class="text-muted">Time: 10:00 AM - 12:00 PM</span><br>
+                <span class="text-muted">Location: Room 101</span><br>
+                <img src="profile-icon.png" alt="Profile Icon" width="30" height="30"> John Doe
+              </li>
+              <li>
+                <span class="font-weight-bold">Science Exam</span><br>
+                <span class="text-muted">Date: 14/05/2024</span><br>
+                <span class="text-muted">Time: 11:00 AM - 1:00 PM</span><br>
+                <span class="text-muted">Location: Room 102</span><br>
+                <img src="profile-icon.png" alt="Profile Icon" width="30" height="30"> Jane Smith
+              </li>
+              <!-- Add more upcoming exams as needed -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <!-- Student Participation -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Student Participation</h5>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>001</td>
+                    <td>John Doe</td>
+                    <td>Completed</td>
+                    <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>002</td>
+                    <td>Jane Smith</td>
+                    <td>Not Attempted</td>
+                    <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">Edit</button></td>
+                  </tr>
+                  <!-- Add more rows as needed -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pass/Fail Statistics -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Pass/Fail Statistics</h5>
+            <div class="row">
+              <div class="col">
+                <p class="text-center">Pass: 70%</p>
+                <canvas id="passFailChart" class="small-chart"></canvas>
+              </div>
+              <div class="col">
+                <p class="text-center">Fail: 30%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Analytics</h5>
+            <!-- Add analytics charts and insights here -->
+          </div>
+        </div>
+
+        <!-- Add Student Form -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Student</h5>
+            <form>
+              <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" class="form-control" id="studentName" placeholder="Enter student name">
+              </div>
+              <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" class="form-control" id="dob">
+              </div>
+              <div class="form-group">
+                <label for="instituteName">Institute Name</label>
+                <input type="text" class="form-control" id="instituteName" placeholder="Enter institute name">
+              </div>
+              <div class="form-group">
+                <label for="examID">Exam ID</label>
+                <input type="text" class="form-control" id="examID" placeholder="Enter exam ID">
+              </div>
+              <!-- Add more fields as needed -->
+              <button type="submit" class="btn btn-primary">Add Student</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Modal -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editStudentModalLabel">Edit Student Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="studentID">Student ID</label>
+              <input type="text" class="form-control" id="studentID" readonly value="001">
+            </div>
+            <div class="form-group">
+              <label for="studentName">Student Name</label>
+              <input type="text" class="form-control" id="studentName" value="John Doe">
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status">
+                <option value="completed">Completed</option>
+                <option value="not_attempted">Not Attempted</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Chart.js scripts -->
+  <script>
+    var ctxExam = document.getElementById('examChart').getContext('2d');
+    var myExamChart = new Chart(ctxExam, {
+      type: 'doughnut',
+      data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+          label: 'Exam Status',
+          data: [80, 20],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+      }
+    });
+
+    var ctxPassFail = document.getElementById('passFailChart').getContext('2d');
+    var myPassFailChart = new Chart(ctxPassFail, {
+      type: 'pie',
+      data: {
+        labels: ['Pass', 'Fail'],
+        datasets: [{
+          label: 'Pass/Fail',
+          data: [70, 30],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(255, 99, 132, 0.8)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+      }
+    });
+  </script>
+</body>
+</html>
